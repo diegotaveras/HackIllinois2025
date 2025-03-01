@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 
 import {
   Card,
@@ -17,68 +17,66 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-const chartData = [
-  { date: "2024-04-01", desktop: 222, mobile: 150 },
-  { date: "2024-04-02", desktop: 97, mobile: 180 },
-  { date: "2024-04-03", desktop: 167, mobile: 120 },
-  { date: "2024-04-04", desktop: 242, mobile: 260 },
-  { date: "2024-04-05", desktop: 373, mobile: 290 },
-  { date: "2024-04-06", desktop: 301, mobile: 340 },
-  { date: "2024-04-07", desktop: 245, mobile: 180 },
-]
+export default function Chart({recipeId, name, timestamp, cost}: {recipeId: string[], name: string[], timestamp: string[], cost: number[]}) {
+  const mealData = recipeId.map((id, index) => ({
+    recipeId: id,
+    name: name[index],
+    timestamp: timestamp[index],
+    cost: cost[index]
+  }));
 
-const chartConfig: Record<string, { label: string; color: string }> = {
-  desktop: {
-    label: "Desktop",
-    color: "#1f77b4", // Blue
-  },
-  mobile: {
-    label: "Mobile",
-    color: "#ff7f0e", // Orange
-  },
-};
+  const totalDate = React.useMemo(() => {
+    const costByDate: Record<string, number> = {};
+    
+    mealData.forEach(meal => {
+      if (!costByDate[meal.timestamp]) {
+        costByDate[meal.timestamp] = 0;
+      }
+      costByDate[meal.timestamp] += meal.cost;
+    });
+    
+    return Object.entries(costByDate).map(([date, totalCost]) => ({
+      date,
+      cost: totalCost
+    }));
+  }, [mealData]);
 
+  const totalCost = React.useMemo(
+    () => mealData.reduce((acc, curr) => acc + curr.cost, 0),
+    [mealData]
+  );
 
-export default function Component() {
-  const [activeChart, setActiveChart] =
-    React.useState<keyof typeof chartConfig>("desktop")
-
-  const total = React.useMemo(
-    () => ({
-      desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
-      mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
-    }),
-    []
-  )
+  const chartConfig = {
+    meals: {
+      label: "Meals",
+    },
+    dailyCost: {
+      label: "Daily Cost",
+      color: "blue",
+    }
+  } as ChartConfig;
 
   return (
     <Card>
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>Line Chart - Interactive</CardTitle>
+          <CardTitle>Meal Cost Tracker</CardTitle>
           <CardDescription>
-            Showing total visitors for the last 3 months
+            Showing daily meal costs
           </CardDescription>
         </div>
         <div className="flex">
-          {["desktop", "mobile"].map((key) => {
-            const chart = key as keyof typeof chartConfig
-            return (
-              <button
-                key={chart}
-                data-active={activeChart === chart}
-                className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
-                onClick={() => setActiveChart(chart)}
-              >
-                <span className="text-xs text-muted-foreground">
-                  {chartConfig[chart].label}
-                </span>
-                <span className="text-lg font-bold leading-none sm:text-3xl">
-                  {total[key as keyof typeof total].toLocaleString()}
-                </span>
-              </button>
-            )
-          })}
+          <button
+            data-active={true}
+            className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+          >
+            <span className="text-xs text-muted-foreground">
+              Total Cost
+            </span>
+            <span className="text-lg font-bold leading-none sm:text-3xl">
+              ${totalCost.toFixed(2)}
+            </span>
+          </button>
         </div>
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
@@ -88,12 +86,13 @@ export default function Component() {
         >
           <LineChart
             accessibilityLayer
-            width={500}
-            height={300}
-            data={chartData}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            data={totalDate}
+            margin={{
+              left: 12,
+              right: 12,
+            }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
+            <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
               tickLine={false}
@@ -101,34 +100,34 @@ export default function Component() {
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
-                return new Date(value).toLocaleDateString("en-US", {
+                const date = new Date(value);
+                return date.toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
-                })
+                });
               }}
             />
-            <YAxis />
             <ChartTooltip
-              content={  
+              content={
                 <ChartTooltipContent
-                  className="w-[150px]"
-                  nameKey="views"
+                  className="w-[150px] bg-white"
+                  nameKey="meals"
                   labelFormatter={(value) => {
                     return new Date(value).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
-                    })
+                    });
                   }}
                 />
               }
             />
             <Line
+              dataKey="cost"
               type="monotone"
-              dataKey={activeChart}
-              stroke={chartConfig[activeChart].color}
+              stroke="var(--color-dailyCost)"
               strokeWidth={2}
-              dot={false}
+              dot={true}
             />
           </LineChart>
         </ChartContainer>
