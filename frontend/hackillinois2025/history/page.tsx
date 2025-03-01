@@ -1,7 +1,8 @@
 import React, {useState} from "react";
+import Component from "././src/components";
 
 export default History = () => {
-  cont [history,setHistory] = useState<{name: string}[]>([])
+  const [history,setHistory] = useState<{name: string}[]>([])
   
   const HistoryItem = ({name, index}: {name:string;index:number}) => (
     <div classname="flex flex-row items-center bg-grey p-2">
@@ -23,8 +24,9 @@ export default History = () => {
             />
           ))}
       </div>
-      <div>
+      <div classname="flex flex-col justify-center justify-items-center">
         <p classname="text-3xl">Weekly</p>
+        <Component />
       </div>
     </div>
   )
