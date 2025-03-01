@@ -6,6 +6,7 @@ import MenubarDemo from "./Menu"
 import {InputField} from "./Input"
 import {ScrollAreaSection} from "./Scroll-area"
 import { Separator } from "./components/ui/separator"
+import History from "./pages/history";
 
 export default function App() {
 
