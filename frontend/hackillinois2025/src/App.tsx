@@ -2,30 +2,29 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import MenubarDemo from "./Menu"
+import {InputField} from "./Input"
+import {ScrollAreaSection} from "./Scroll-area"
+import { Separator } from "./components/ui/separator"
 
 export default function App() {
-  const [count, setCount] = useState(0);
 
   return (
-    <>
+    <div>
       <div>
-        <h>What's your budget?</h>
-        <div>
-          <div></div>
-        </div>
+        <MenubarDemo />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className="container bg-blue-500 w-full h-27">
+        <h1>RecipeApp</h1>
+        <p>Budget your meals in college</p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <div style={{ padding: '50px'}}>
+      </div>
+      <InputField />
+      <Separator className="my-2" />
+      <div>
+        <ScrollAreaSection />
+      </div>
+    </div>
   );
 }
