@@ -1,22 +1,20 @@
 import React, {useState} from "react";
-import Component from "././src/components";
+import Component from "../components/chart";
 
-export default History = () => {
+export default function History() {
   const [history,setHistory] = useState<{name: string}[]>([])
   
   const HistoryItem = ({name, index}: {name:string;index:number}) => (
-    <div classname="flex flex-row items-center bg-grey p-2">
+    <div className="flex flex-row items-center bg-grey p-2">
       <p>{index}</p>
       <p>{name}&& </p>
     </div>
   )
   
-  
-  
   return(
-    <div classname="flex flex-row justify-between justify-items-stretch">
+    <div className="flex flex-row justify-between justify-items-stretch">
       <div>
-        <p classname="text-3xl">Meal History</p>
+        <p className="text-3xl">Meal History</p>
           {history.map((item, index) => (
             <HistoryItem
               name = {item.name}
@@ -24,8 +22,8 @@ export default History = () => {
             />
           ))}
       </div>
-      <div classname="flex flex-col justify-center justify-items-center">
-        <p classname="text-3xl">Weekly</p>
+      <div className="flex flex-col justify-center justify-items-center">
+        <p className="text-3xl">Weekly</p>
         <Component />
       </div>
     </div>
