@@ -73,11 +73,8 @@ MOCK_PRICES_BREAKDOWN = {
 @app.get("/")
 async def root():
     try:
-        print("Fetching sample recipes = ITALIAN RECIPES UNDER 10 DOLLARS")
-        budget = 1000.0
-        cuisine = "italian"
-        recipes = await get_recipes(budget, cuisine)
-        return {"message": "Hello World", "recipes": recipes["results"]}
+        
+        return {"message": "Hello World"}
     except Exception as e:
         return {"error": str(e)}
 
@@ -106,8 +103,10 @@ async def get_recipes(budget: float, cuisine: str):
         valid_recipes = []
         for recipe in data['results']:
             cost = 0.0
+            ingredients = ""
             if recipe['id'] in cached_recipes:
                 cost = cached_recipes[recipe['id']]
+                ingredients = cached_recipes[recipe['id']['cost']]
             else:
                 price_params = {
                     "apiKey": API_KEY
@@ -117,8 +116,11 @@ async def get_recipes(budget: float, cuisine: str):
 
                 cost = breakdown_data['totalCostPerServing'] / 100
                 cached_recipes[recipe['id']] = cost
+                ingredients_list = [ingredient["name"] for ingredient in breakdown_data.get("ingredients", [])]
+                ingredients = ", ".join(ingredients_list)
+
             if cost <= budget:
-                valid_recipes.append({"id": recipe['id'], "title": recipe['title'], "cost": cost})
+                valid_recipes.append({"id": recipe['id'], "title": recipe['title'], "cost": cost, "ingredients": ingredients})
 
             print(valid_recipes)
 
