@@ -15,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-API_KEY = "4136cd9fa253479aaeb846b336d6dd31"
+API_KEY = "c64dfa783b98476a8626cdd29865082f"
 BASE_URL = "https://api.spoonacular.com"
 
 cached_recipes = {}
@@ -83,46 +83,46 @@ async def root():
 
 
 @app.get("/recipes")
-async def get_recipes(budget: float, cuisine: str):
-    return {"results": MOCK_COMPLEX_SEARCH['results']}
+# async def get_recipes(budget: float, cuisine: str):
+#     return {"results": MOCK_COMPLEX_SEARCH['results']}
     
 
-# async def get_recipes(budget: float, cuisine: str):
-#     try: 
-#         print("Making request to API...")
-#         search_params = {
-#             "cuisine": cuisine,
-#             "number": 100,
-#             "apiKey": API_KEY
-#         }
+async def get_recipes(budget: float, cuisine: str):
+    try: 
+        print("Making request to API...")
+        search_params = {
+            "cuisine": cuisine,
+            "number": 3,
+            "apiKey": API_KEY
+        }
 
-#         response = requests.get(f"{BASE_URL}/recipes/complexSearch", params=search_params)
-#         data = response.json()
+        response = requests.get(f"{BASE_URL}/recipes/complexSearch", params=search_params)
+        data = response.json()
 
-#         if "results" not in data:
-#             print('failed')
-#             raise HTTPException(status_code = 404, detail = "No Recipes Found")
+        if "results" not in data:
+            print('failed')
+            raise HTTPException(status_code = 404, detail = "No Recipes Found")
         
-#         valid_recipes = []
-#         for recipe in data['results']:
-#             cost = 0.0
-#             if recipe['id'] in cached_recipes:
-#                 cost = cached_recipes[recipe['id']]
-#             else:
-#                 price_params = {
-#                     "apiKey": API_KEY
-#                 }
-#                 breakdown_response = requests.get(f"{BASE_URL}/recipes/{recipe['id']}/priceBreakdownWidget.json", params=price_params)
-#                 breakdown_data = breakdown_response.json()
+        valid_recipes = []
+        for recipe in data['results']:
+            cost = 0.0
+            if recipe['id'] in cached_recipes:
+                cost = cached_recipes[recipe['id']]
+            else:
+                price_params = {
+                    "apiKey": API_KEY
+                }
+                breakdown_response = requests.get(f"{BASE_URL}/recipes/{recipe['id']}/priceBreakdownWidget.json", params=price_params)
+                breakdown_data = breakdown_response.json()
 
-#                 cost = breakdown_data['totalCostPerServing'] / 100
-#                 cached_recipes[recipe['id']] = cost
-#             if cost <= budget:
-#                 valid_recipes.append({"id": recipe['id'], "recipeName": recipe['title'], "cost": cost})
+                cost = breakdown_data['totalCostPerServing'] / 100
+                cached_recipes[recipe['id']] = cost
+            if cost <= budget:
+                valid_recipes.append({"id": recipe['id'], "title": recipe['title'], "cost": cost})
 
-#             print(valid_recipes)
+            print(valid_recipes)
 
-#         return {"results": valid_recipes}
-#     except Exception as e:
-#         raise HTTPException(status_code = 500, detail = str(e))
+        return {"results": valid_recipes}
+    except Exception as e:
+        raise HTTPException(status_code = 500, detail = str(e))
 
