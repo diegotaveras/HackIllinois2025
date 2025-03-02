@@ -32,9 +32,9 @@ const Recipe = ({id, cost, title, ingredients, imageUrl}: Recipetype) => {
 
     return (
         <div className="border p-4 rounded-lg shadow-lg">
-          <h3 className="text-lg font-bold">{title}</h3>
-          <p>Cost: ${cost.toFixed(2)}</p>
-          <p><img src={imageUrl} alt="Meal image" width={"150px"} height={"150px"}></img></p>
+          <p className="flex justify-center"><img src={imageUrl} alt="Meal image" width={"200px"} height={"250px"}></img></p>
+          <h3 className="text-lg font-bold text-center">{title}</h3>
+          <p className="text-center">Cost: ${cost.toFixed(2)}</p>
           <button
         className={`mt-2 px-4 py-2 rounded-lg border w-full text-white`}
         onClick={() => setInterested(!interested)}
