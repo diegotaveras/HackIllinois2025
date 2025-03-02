@@ -49,7 +49,7 @@ interface HeaderProps {
                 <label className="flex row pr-5 pl-10 pt-2">Enter your budget:</label>
                 <input type="number" className="p-2 rounded-lg text-black" placeholder="Budget" value={budget} onChange={(e) => setBudget(Number(e.target.value))}/>
             </div>
-            <button className="bg-blue-500 px-4 py-2 rounded-lg text-white" onClick={handleSearch}> Search </button>
+            <button className="bg-blue-900 px-4 py-2 rounded-lg text-white" onClick={handleSearch}> Search </button>
         </div>
     )
 }

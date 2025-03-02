@@ -33,9 +33,6 @@ export default function Home() {
       <div>
         <div style={{padding: 90}}></div>
         <h1 className="flex flex-col items-center font-bold text-3xl pb-12">Recipe Finder</h1>
-        {/* <div className="size=20"><Icon /></div> */}
-        {/* <ShoppingCartIcon></ShoppingCartIcon> */}
-        <ShoppingCartIcon />
         <div className="flex flex-col items-center">
           <div className="pb-8">
             <NavBar onSearch={search}></NavBar>
