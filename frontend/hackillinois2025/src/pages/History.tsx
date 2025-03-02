@@ -28,7 +28,7 @@ export default function History() {
           const response = await fetch(
             `https://api.spoonacular.com/recipes/${item.recipeId}/priceBreakdownWidget`
           );
-          const htmlContent = await response.text(); // Use text() instead of json() for HTML
+          const htmlContent = await response.text();
           return {
             recipeId: item.recipeId,
             htmlContent
@@ -41,7 +41,7 @@ export default function History() {
     fetchData();
   }, []);
   
-  const HistoryItem = ({key, name, index}: {key: string;name:string;index:number}) => (
+  const HistoryItem = ({name, index}: {name:string;index:number}) => (
     <Popover>
       <PopoverTrigger className="flex flex-row items-center border-transparent bg-grey p-2 w-full shadow-none mr-2 p-2 cursor-pointer">
         <p className="pr-2">{index}</p>
