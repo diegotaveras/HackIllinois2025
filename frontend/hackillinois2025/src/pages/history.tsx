@@ -10,18 +10,29 @@ export default function History() {
     recipeId: string;
     name: string;
     timestamp: string;
+    ingredients: string;
     cost: number;
   }[]>([])
   const [widgetData, setWidgetData] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchHistory = async () => {
-      const response = await fetch("localhost:8000/history")
-      const data = await response.json()
-      setHistory(data)
-    }
-    fetchHistory()
-  }, [])
+      try {
+        const response = await fetch("http://localhost:8000/history");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("History data:", data);
+        // Optionally update state here with the data.
+        setHistory(data.history)
+      } catch (error) {
+        console.error("Error fetching history:", error);
+      }
+    };
+  
+    fetchHistory();
+  }, []);
   useEffect(() => {
     // Define a type for your data items that will hold the HTML
     type WidgetDataItem = {
@@ -30,11 +41,21 @@ export default function History() {
     };
   
     const fetchData = async () => {
-      const data: WidgetDataItem[] = await Promise.all(
+        const params = {
+            mode: 'cors',
+            headers: {
+              'x-api-key': '6a24f7df04754a29a97910bd73b076a2',
+              'User-Agent': 'My-App',
+              'Accept': '*/*',
+            },
+          };
+        const data: WidgetDataItem[] = await Promise.all(
+
         history.map(async (item) => {
-          const response = await fetch(
-            `https://api.spoonacular.com/recipes/${item.recipeId}/priceBreakdownWidget`
-          );
+        
+            const response = await fetch(
+            `https://api.spoonacular.com/recipes/${item.recipeId}/priceBreakdownWidget`,
+            params as any);
           const htmlContent = await response.text();
           return {
             recipeId: item.recipeId,
@@ -42,21 +63,23 @@ export default function History() {
           };
         })
       );
+      console.log(data)
       setWidgetData(data.map(item => item.htmlContent));
     };
   
     fetchData();
   }, [history]);
-  
   const HistoryItem = ({name, index}: {name:string;index:number}) => (
     <Popover>
-      <PopoverTrigger className="flex flex-row items-center border-transparent bg-grey p-2 w-full shadow-none mr-2 p-2 cursor-pointer">
+      <PopoverTrigger className="flex flex-row items-center border-transparent bg-grey p-2 w-full shadow-none mr-2 p-2 cursor-pointer" onClick={() => console.log(widgetData)}>
+      
         <p className="pr-2">{index}</p>
         <p>{name}</p>
       </PopoverTrigger>
       <PopoverContent className="bg-white shadow-lg">
         <div 
-          dangerouslySetInnerHTML={{__html: widgetData[index]}}></div>
+            
+          dangerouslySetInnerHTML={{__html: widgetData[index] || "" }}></div>
       </PopoverContent>
     </Popover>
   );
@@ -70,7 +93,7 @@ export default function History() {
           <HistoryItem
             key={item.recipeId}
             name={item.name}
-            index={index + 1}
+            index={index}
           />
         ))}
       </div>

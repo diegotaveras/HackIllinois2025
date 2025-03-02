@@ -24,10 +24,16 @@ DB_PATH = "database.db"  # Path to your SQLite file (can be any database)
 # POST /history - Log a new recipe view for a user
 @router.post("/history")
 async def create_history_item(recipe: Recipe):
-    
     try:
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
+            # Check if the recipeId already exists
+            cursor.execute("SELECT 1 FROM history WHERE recipeId = ?", (recipe.recipeId,))
+            existing = cursor.fetchone()
+            if existing is not None:
+                return {"message": "History item already exists."}
+            
+            # Insert only if the recipeId is not found
             cursor.execute(
                 "INSERT INTO history (recipeId, nameOfRecipe, ingredients, costPerServing, timestamp) VALUES (?, ?, ?, ?, ?)",
                 (recipe.recipeId, recipe.recipeName, recipe.ingredientList, recipe.costOfRecipe, recipe.timestamp)
@@ -38,6 +44,7 @@ async def create_history_item(recipe: Recipe):
         raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
 
+
 # GET /history/{user_id} - Fetch the latest 15 recipes viewed by the user
 @router.get("/history")
 async def get_user_history():
@@ -45,7 +52,7 @@ async def get_user_history():
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "SELECT recipeId, nameOfRecipe, timestamp, costPerServing FROM history ORDER BY timestamp DESC LIMIT 15",
+                "SELECT DISTINCT recipeId, nameOfRecipe, timestamp, costPerServing FROM history ORDER BY timestamp ASC LIMIT 15",
                 ()
             )
             rows = cursor.fetchall()
