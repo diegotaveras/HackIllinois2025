@@ -1,9 +1,4 @@
-@import "@radix-ui/colors/black-alpha.css";
-@import "@radix-ui/colors/mauve.css";
-@import "@radix-ui/colors/violet.css";
-
-/* reset */
-button {
+/* button {
 	all: unset;
 	margin: 200px;
 }
@@ -129,4 +124,4 @@ button {
 
 [data-disabled] > .RightSlot {
 	color: var(--mauve-8);
-}
+} */

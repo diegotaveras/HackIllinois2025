@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import Component from "../components/chart";
+// import Component from "../components/chart";
 
 export default function History() {
   const [history,setHistory] = useState<{name: string}[]>([])
@@ -24,7 +24,7 @@ export default function History() {
       </div>
       <div className="flex flex-col justify-center justify-items-center">
         <p className="text-3xl">Weekly</p>
-        <Component />
+        {/* <Component /> */}
       </div>
     </div>
   )
