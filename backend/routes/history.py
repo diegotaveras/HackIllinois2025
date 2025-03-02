@@ -56,7 +56,28 @@ async def get_user_history():
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {e}")
+    
+@router.get("/groceries")
+async def get_groceries():
+    current_cart = set()
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT ingredients FROM history",
+                ()
+            )
+            rows = cursor.fetchall()
 
+        # Convert to list of dicts
+        for row in rows:
+            row_split = row[0].split(", ")
+            print(row_split)
+            current_cart.update(row_split)
+        return {"cart": current_cart}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
 
 
