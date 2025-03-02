@@ -30,7 +30,7 @@ export default function Home() {
       <div>
         <div style={{padding: 70}}></div>
         <div className="flex flex-col items-center">
-          <div><NavBar onSearch={search}></NavBar></div>
+          <div className="pb-8"><NavBar onSearch={search}></NavBar></div>
           <div>
               {searchResults.length === 0 ? (
                 <p>No recipes found.</p>

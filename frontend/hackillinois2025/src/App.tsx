@@ -1,8 +1,8 @@
 import {BrowserRouter,Routes, Route} from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./App.css";
-import MenuBar from "./menu";
-import Home from "./pages/Home"
+import MenuBar from "./Menu";
+import Home from "./pages/home"
 import History from "./pages/history"
 import Profile from "./pages/profile"
 import { Recipetype } from "./types";
@@ -28,8 +28,6 @@ export default function App() {
       console.log("Error:", error)
     }
   }
-
-
 
   return (
     <>
