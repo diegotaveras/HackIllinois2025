@@ -14,8 +14,9 @@ const Recipe = ({id, cost, title, ingredients}: Recipetype) => {
         return
       }
       try {
-        const response = await fetch(`http://127.0.0.1:8000/history}`, {
+        const response = await fetch(`http://127.0.0.1:8000/history`, {
           method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ "recipeId": id,"timestamp":selectedDate.toISOString().split("T")[0],"recipeName": title ,"costOfRecipe": cost.toFixed(2), "ingredientList":ingredients})
 
 

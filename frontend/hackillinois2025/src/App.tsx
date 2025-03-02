@@ -14,7 +14,7 @@ export default function App() {
 
   const search = async(cuisine: string, budget: number) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/recipes?budget=${budget}&cuisine=${cuisine}`)
+      const response = await fetch(`http://localhost:8000/recipes?budget=${budget}&cuisine=${cuisine}`)
       const data = await response.json()
       const results: Recipetype[] = data.results
       if (results.length > 0) {
