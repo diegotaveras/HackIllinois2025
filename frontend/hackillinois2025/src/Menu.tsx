@@ -1,21 +1,21 @@
 import {
-  Menubar,
-  MenubarCheckboxItem,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarRadioGroup,
-  MenubarRadioItem,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarSub,
-  MenubarSubContent,
-  MenubarSubTrigger,
-  MenubarTrigger,
-} from "./components/ui/menubar"
-import { NavLink, useRoutes } from 'react-router-dom'
-import userIcon from "./assets/user-icon.svg"
-
+    Menubar,
+    MenubarCheckboxItem,
+    MenubarContent,
+    MenubarItem,
+    MenubarMenu,
+    MenubarRadioGroup,
+    MenubarRadioItem,
+    MenubarSeparator,
+    MenubarShortcut,
+    MenubarSub,
+    MenubarSubContent,
+    MenubarSubTrigger,
+    MenubarTrigger,
+  } from "./components/ui/menubar"
+  import { NavLink } from 'react-router-dom'
+  import userIcon from "./assets/user-icon.svg"
+  
 //   export function MenubarDemo() {
 //     return (
 //         <nav className="navbar navbar-light">
@@ -123,23 +123,23 @@ import userIcon from "./assets/user-icon.svg"
 
 function MenubarDemo() {
 
-return (
-  <Menubar className="flex flex-row justify-between border-transparent justify-self-stretch bg-white-500 h-20 drop-shadow-xl box-sizing: inherit">
-      <MenubarMenu >
-          <MenubarTrigger className="text-xl">RecipeApp</MenubarTrigger>
-      </MenubarMenu>
-      <div style={{ padding: '350px'}}></div>
-      <MenubarMenu>
-          <MenubarTrigger classNAme="text-xl">Home</MenubarTrigger>
-      </MenubarMenu>
-      <MenubarMenu>
-          <MenubarTrigger className="text-lg" >History</MenubarTrigger>
-      </MenubarMenu>
-      <MenubarMenu>
-          <MenubarTrigger><img src={userIcon} alt="User" width={"30px"} height={"30px"}></img></MenubarTrigger>
-      </MenubarMenu>
-  </Menubar>
-)
+  return (
+    <Menubar className="flex flex-row justify-between border-transparent justify-self-stretch bg-white-500 h-20 drop-shadow-xl box-sizing: inherit">
+        <MenubarMenu >
+            <MenubarTrigger className="text-xl">RecipeApp</MenubarTrigger>
+        </MenubarMenu>
+        <div style={{ padding: '350px'}}></div>
+        <MenubarMenu>
+            <MenubarTrigger classNAme="text-xl">Home</MenubarTrigger>
+        </MenubarMenu>
+        <MenubarMenu>
+            <MenubarTrigger className="text-lg">History</MenubarTrigger>
+        </MenubarMenu>
+        <MenubarMenu>
+            <MenubarTrigger><img src={userIcon} alt="User" width={"30px"} height={"30px"}></img></MenubarTrigger>
+        </MenubarMenu>
+    </Menubar>
+  )
 }
 
 export default MenubarDemo
