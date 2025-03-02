@@ -6,7 +6,7 @@ import userIcon from "./assets/user-icon.png"
 
 
 
-const Recipe = ({id, cost, title, ingredients, imageUrl}: Recipetype) => {
+const Recipe = ({id, cost, title, ingredients, imageUrl, recipeBreakdown}: Recipetype) => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [interested, setInterested] = useState<boolean> (false);
 
@@ -18,7 +18,7 @@ const Recipe = ({id, cost, title, ingredients, imageUrl}: Recipetype) => {
         const response = await fetch(`http://127.0.0.1:8000/history`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ "recipeId": id,"timestamp":selectedDate.toISOString().split("T")[0],"recipeName": title ,"costOfRecipe": cost.toFixed(2), "ingredientList":ingredients , "recipeImage": imageUrl})
+          body: JSON.stringify({ "recipeId": id,"timestamp":selectedDate.toISOString().split("T")[0],"recipeName": title ,"costOfRecipe": cost.toFixed(2), "ingredientList":ingredients , "recipeImage": imageUrl, "recipeBreakdown": recipeBreakdown})
 
         })
         const data = await response.json()
@@ -68,7 +68,8 @@ const RecipeList = ({recipes}: RecipeListType) => {
             title={recipe.title}
             cost={recipe.cost}
             ingredients={recipe.ingredients} 
-            imageUrl={recipe.imageUrl}/>
+            imageUrl={recipe.imageUrl}
+            recipeBreakdown={recipe.recipeBreakdown}/>
           ))}
         </div>
       );

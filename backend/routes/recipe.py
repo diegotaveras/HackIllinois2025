@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 router = APIRouter()
 
-API_KEY = "6a24f7df04754a29a97910bd73b076a2"
+API_KEY = "623b79bdcbef41e8bca6bbc790ab7020"
 BASE_URL = "https://api.spoonacular.com"
 
 # Cache now stores a dictionary with both cost and ingredients for each recipe ID.
@@ -40,11 +40,13 @@ async def get_recipes(budget: float, cuisine: str):
         for recipe in data['results']:
             cost = 0.0
             ingredients = ""
+            recipeBreakdown = ""
             if recipe['id'] in cached_recipes:
                 # Retrieve both cost and ingredients from the cache
                 cached_data = cached_recipes[recipe['id']]
                 cost = cached_data["cost"]
                 ingredients = cached_data["ingredients"]
+                recipeBreakdown = cached_data["recipeBreakdown"]
             else:
                 price_params = {
                     "apiKey": API_KEY
@@ -57,9 +59,10 @@ async def get_recipes(budget: float, cuisine: str):
 
                 cost = breakdown_data['totalCostPerServing'] / 100
                 ingredients_list = [ingredient["name"] for ingredient in breakdown_data.get("ingredients", [])]
+                price_breakdown_list = [ingredient["name"] + ": $" + str(round(ingredient["price"] / 100,2)) for ingredient in breakdown_data.get("ingredients", [])]
                 ingredients = ", ".join(ingredients_list)
-                # Cache the recipe data as a dictionary containing both cost and ingredients
-                cached_recipes[recipe['id']] = {"cost": cost, "ingredients": ingredients}
+                recipeBreakdown = ",".join(price_breakdown_list)
+                cached_recipes[recipe['id']] = {"cost": cost, "ingredients": ingredients, "recipeBreakdown": recipeBreakdown}
 
             if cost <= budget:
                 # Append the valid recipe to the list
@@ -68,7 +71,8 @@ async def get_recipes(budget: float, cuisine: str):
                     "title": recipe['title'],
                     "cost": cost,
                     "ingredients": ingredients,
-                    "imageUrl": recipe['image']
+                    "imageUrl": recipe['image'],
+                    "recipeBreakdown": recipeBreakdown
                 })
 
             print(valid_recipes)
@@ -76,3 +80,6 @@ async def get_recipes(budget: float, cuisine: str):
         return {"results": valid_recipes}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+
+

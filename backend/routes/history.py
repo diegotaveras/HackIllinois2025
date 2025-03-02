@@ -14,6 +14,7 @@ class Recipe(BaseModel):
     timestamp: str
     costOfRecipe: float
     recipeName: str
+    recipeBreakdown: str
 
 
 conn = sqlite3.connect("database.db")
@@ -35,8 +36,8 @@ async def create_history_item(recipe: Recipe):
             
             # Insert only if the recipeId is not found
             cursor.execute(
-                "INSERT INTO history (recipeId, nameOfRecipe, ingredients, costPerServing, timestamp) VALUES (?, ?, ?, ?, ?)",
-                (recipe.recipeId, recipe.recipeName, recipe.ingredientList, recipe.costOfRecipe, recipe.timestamp)
+                "INSERT INTO history (recipeId, nameOfRecipe, ingredients, costPerServing, timestamp, recipeBreakdown) VALUES (?, ?, ?, ?, ?, ?)",
+                (recipe.recipeId, recipe.recipeName, recipe.ingredientList, recipe.costOfRecipe, recipe.timestamp, recipe.recipeBreakdown)
             )
             conn.commit()
         return {"message": "History item created successfully"}
@@ -52,13 +53,13 @@ async def get_user_history():
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "SELECT DISTINCT recipeId, nameOfRecipe, timestamp, costPerServing FROM history ORDER BY timestamp ASC LIMIT 15",
+                "SELECT DISTINCT recipeId, nameOfRecipe, timestamp, costPerServing, recipeBreakdown FROM history ORDER BY timestamp ASC LIMIT 15",
                 ()
             )
             rows = cursor.fetchall()
 
         # Convert to list of dicts
-        history = [{"recipeId": row[0], "name": row[1], "timestamp": row[2], "cost": row[3]} for row in rows]
+        history = [{"recipeId": row[0], "name": row[1], "timestamp": row[2], "cost": row[3], "recipeBreakdown": row[4]} for row in rows]
         return {"history": history}
 
     except Exception as e:
@@ -81,7 +82,7 @@ async def get_groceries():
             row_split = row[0].split(", ")
             print(row_split)
             current_cart.update(row_split)
-        return {"cart": current_cart}
+        return {"cart": list(current_cart)}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {e}")
