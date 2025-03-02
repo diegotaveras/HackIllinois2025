@@ -3,6 +3,7 @@ export interface Recipetype {
     title: string;
     cost: number;
     ingredients: string;
+    imageUrl: string;
   }
 
 export interface RecipeListType {
