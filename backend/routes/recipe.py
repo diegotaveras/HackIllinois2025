@@ -6,7 +6,7 @@ import pprint
 router = APIRouter()
 
 
-API_KEY = "c64dfa783b98476a8626cdd29865082f"
+API_KEY = "6a24f7df04754a29a97910bd73b076a2"
 BASE_URL = "https://api.spoonacular.com"
 
 cached_recipes = {}
