@@ -4,6 +4,7 @@ export interface Recipetype {
     cost: number;
     ingredients: string;
     imageUrl: string;
+    recipeBreakdown: string;
   }
 
 export interface RecipeListType {
