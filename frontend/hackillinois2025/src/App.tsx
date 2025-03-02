@@ -1,11 +1,17 @@
+import {BrowserRouter,Routes, Route} from "react-router-dom";
 import { useEffect, useState } from "react";
-import NavBar from "./navbar";
 import "./App.css";
+import MenuBar from "./Menu";
+import Home from "./pages/home"
+import History from "./pages/history"
+import Profile from "./pages/profile"
 import { Recipetype } from "./types";
-import {RecipeList} from "./recipe";
+import { RecipeList } from "./recipe";
+import NavBar from "./navbar";
 
 
 export default function App() {
+
   const [searchResults, setSearchResults] = useState<Recipetype[]>([])
 
   useEffect(() => {
@@ -25,19 +31,19 @@ export default function App() {
     }
   }
 
-
-
   return (
     <>
-      <div><NavBar onSearch={search}></NavBar></div>
-      <div>
-          {searchResults.length === 0 ? (
-            <p>No recipes found.</p>
-          ) : (
-            <RecipeList recipes={searchResults} />
-          )}
-      </div>
+      <BrowserRouter>
+        <div>
+          <MenuBar />
+          <Routes>
+            <Route path="/Home" element={<Home />} />
+            <Route path="/History" element={<History />} />
+            <Route path="/Profile" element={<Profile />}></Route>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
     </>
-    
-  );
+  );   
 }

@@ -1,11 +1,12 @@
 import { Recipetype, RecipeListType } from "./types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import userIcon from "./assets/user-icon.png"
 
 
 
-const Recipe = ({id, cost, title, ingredients}: Recipetype) => {
+const Recipe = ({id, cost, title, ingredients, imageUrl}: Recipetype) => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [interested, setInterested] = useState<boolean> (false);
 
@@ -14,11 +15,10 @@ const Recipe = ({id, cost, title, ingredients}: Recipetype) => {
         return
       }
       try {
-        const response = await fetch(`http://127.0.0.1:8000/history`, {
+        const response = await fetch(`http://127.0.0.1:8000/history}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ "recipeId": id,"timestamp":selectedDate.toISOString().split("T")[0],"recipeName": title ,"costOfRecipe": cost.toFixed(2), "ingredientList":ingredients})
-
+          body: JSON.stringify({ "recipeId": id,"timestamp":selectedDate.toISOString().split("T")[0],"recipeName": title ,"costOfRecipe": cost.toFixed(2), "ingredientList":ingredients , "recipeImage": imageUrl})
 
         })
         const data = await response.json()
@@ -28,11 +28,13 @@ const Recipe = ({id, cost, title, ingredients}: Recipetype) => {
         console.log("Error:", error)
       }
     }
+    // console.log(imageURL)
+
     return (
         <div className="border p-4 rounded-lg shadow-lg">
           <h3 className="text-lg font-bold">{title}</h3>
           <p>Cost: ${cost.toFixed(2)}</p>
-          
+          <p><img src={imageUrl} alt="Meal image" width={"150px"} height={"150px"}></img></p>
           <button
         className={`mt-2 px-4 py-2 rounded-lg border w-full text-white`}
         onClick={() => setInterested(!interested)}
@@ -46,7 +48,7 @@ const Recipe = ({id, cost, title, ingredients}: Recipetype) => {
             value={selectedDate}
           />
           <button
-            className="mt-2 bg-blue-500 px-4 py-2 rounded-lg border border-white w-full text-white"
+            className="mt-2 bg-blue-500 px-4 py-2 rounded-lg border border-white w-full"
             onClick={handleAddMeal}
           >
             Add to Meal Plan
@@ -65,7 +67,8 @@ const RecipeList = ({recipes}: RecipeListType) => {
             id={recipe.id}
             title={recipe.title}
             cost={recipe.cost}
-            ingredients={recipe.ingredients} />
+            ingredients={recipe.ingredients} 
+            imageUrl={recipe.imageUrl}/>
           ))}
         </div>
       );
