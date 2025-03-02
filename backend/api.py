@@ -1,15 +1,26 @@
 from fastapi import FastAPI
-import spoonacular as sp
-import pprint
+from routes.history import router as history_router
+from routes.recipe import router as recipe_router
+from fastapi.middleware.cors import CORSMiddleware
 
 
+# API_KEY = "c64dfa783b98476a8626cdd29865082f"
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Add your frontend's port
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include the history router
+app.include_router(history_router)
+app.include_router(recipe_router)
 
 
 
-api = sp.API("4136cd9fa253479aaeb846b336d6dd31")
 
-response = api.parse_ingredients("3.5 cups King Arthur flour", servings=1)
-data = response.json()
-print(data)
+
+

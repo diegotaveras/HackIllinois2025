@@ -1,43 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import './components/Navbar.js'
-import imagePath from './assets/react.svg'
-import Navbar from './components/Navbar.js'
+import {BrowserRouter,Routes, Route} from "react-router-dom";
+import { useEffect, useState } from "react";
+import "./App.css";
+import MenuBar from "./Menu";
+import Home from "./pages/home"
+import History from "./pages/history"
+import Profile from "./pages/profile"
+import { Recipetype } from "./types";
+import { RecipeList } from "./recipe";
+import NavBar from "./navbar";
 
-function App() {
-  const [count, setCount] = useState(0)
-  let items = ["Home", "Past Recipes", "Profile"];
+
+export default function App() {
+
+  const [searchResults, setSearchResults] = useState<Recipetype[]>([])
+
+  useEffect(() => {
+    console.log(searchResults); // Access the updated value here
+  }, [searchResults]);
+
+  const search = async(cuisine: string, budget: number) => {
+    try {
+      const response = await fetch(`http://localhost:8000/recipes?budget=${budget}&cuisine=${cuisine}`)
+      const data = await response.json()
+      const results: Recipetype[] = data.results
+      if (results.length > 0) {
+        setSearchResults(results)
+      } 
+    } catch(error) {
+      console.log("Error:", error)
+    }
+  }
 
   return (
     <>
-      <div>
-        <Navbar 
-        brandName="My Brand"
-        imageSrcPath={imagePath}
-        navItems={items}/>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+        <div>
+          <MenuBar />
+          <Routes>
+            <Route path="/Home" element={<Home />} />
+            <Route path="/History" element={<History />} />
+            <Route path="/Profile" element={<Profile />}></Route>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
     </>
-  )
+  );   
 }
-
-export default App
