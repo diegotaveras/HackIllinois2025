@@ -15,7 +15,7 @@ const Recipe = ({id, cost, title, ingredients, imageUrl}: Recipetype) => {
         return
       }
       try {
-        const response = await fetch(`http://127.0.0.1:8000/history}`, {
+        const response = await fetch(`http://127.0.0.1:8000/history`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ "recipeId": id,"timestamp":selectedDate.toISOString().split("T")[0],"recipeName": title ,"costOfRecipe": cost.toFixed(2), "ingredientList":ingredients , "recipeImage": imageUrl})
@@ -36,7 +36,7 @@ const Recipe = ({id, cost, title, ingredients, imageUrl}: Recipetype) => {
           <p>Cost: ${cost.toFixed(2)}</p>
           <p><img src={imageUrl} alt="Meal image" width={"150px"} height={"150px"}></img></p>
           <button
-        className={`mt-2 px-4 py-2 rounded-lg border w-full text-white`}
+        className={`mt-2 px-4 py-2 rounded-lg border w-full text-black`}
         onClick={() => setInterested(!interested)}
       >
         {interested ? "Not Interested" : "Interested"}
