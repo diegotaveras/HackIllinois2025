@@ -5,16 +5,23 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 
 
 export default function History() {
-  const history = [
-    {
-      "recipeId": "659109",
-      "name": "Salmon Quinoa Risotto",
-      "timestamp": "2025-03-06",
-      "cost": 3.42
-    },
-  ];
+
+  const [history, setHistory] = useState<{
+    recipeId: string;
+    name: string;
+    timestamp: string;
+    cost: number;
+  }[]>([])
   const [widgetData, setWidgetData] = useState<string[]>([]);
 
+  useEffect(() => {
+    const fetchHistory = async () => {
+      const response = await fetch("localhost:8000/history")
+      const data = await response.json()
+      setHistory(data)
+    }
+    fetchHistory()
+  }, [])
   useEffect(() => {
     // Define a type for your data items that will hold the HTML
     type WidgetDataItem = {
@@ -39,7 +46,7 @@ export default function History() {
     };
   
     fetchData();
-  }, []);
+  }, [history]);
   
   const HistoryItem = ({name, index}: {name:string;index:number}) => (
     <Popover>
