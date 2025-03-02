@@ -3,7 +3,7 @@ import {
   MenubarMenu,
   MenubarTrigger,
 } from "./components/ui/menubar"
-import userIcon from "./assets/no-profile-pic.svg"
+import userIcon from "./assets/no-profile-pic.png"
 import { Link } from "react-router-dom";
 
 function MenuBar() {

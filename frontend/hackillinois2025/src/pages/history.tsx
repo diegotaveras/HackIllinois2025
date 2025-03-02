@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Chart from "@/components/chart"; 
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import foodIcon from "@/assets/food-icon.png"
 
 
 export default function History() {
@@ -62,9 +63,8 @@ export default function History() {
   );
   
   return (
-    <div className="w-full flex flex-row justify-between justify-items-center p-3">
+    <div className="w-full flex flex-col justify-between justify-items-center p-3 pt-30">
       <div className="flex flex-col justify-center justify-content-center w-auto">
-        <p className="text-3xl mb-4">Meal History</p>
         {history.map((item, index) => (
           <HistoryItem
             key={item.recipeId}
@@ -74,7 +74,7 @@ export default function History() {
         ))}
       </div>
       <div className="flex flex-col justify-center justify-content-center grow">
-        <p className="flex text-3xl justify-center align-center pb-5">Weekly</p>
+      <p className="flex text-3xl justify-center align-center pb-5 pt-7">Weekly Meal History</p>
         <Chart 
           recipeId={history.map(item => item.recipeId)} 
           name={history.map(item => item.name)} 
