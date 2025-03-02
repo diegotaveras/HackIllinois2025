@@ -13,5 +13,9 @@ export default function App() {
         <Route path="/history" element={<History />} />
       </Routes>
     </div>
+=======
+import { useEffect, useState } from "react";
+import NavBar from "./navbar";
+import "./App.css";
   );
 }
