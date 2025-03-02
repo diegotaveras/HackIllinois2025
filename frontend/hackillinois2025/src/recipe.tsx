@@ -6,7 +6,7 @@ import userIcon from "./assets/user-icon.png"
 
 
 
-const Recipe = ({id, cost, title, ingredients, imageURL}: Recipetype) => {
+const Recipe = ({id, cost, title, ingredients, imageUrl}: Recipetype) => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [interested, setInterested] = useState<boolean> (false);
 
@@ -15,10 +15,10 @@ const Recipe = ({id, cost, title, ingredients, imageURL}: Recipetype) => {
         return
       }
       try {
-        const response = await fetch(`http://127.0.0.1:8000/history`, {
+        const response = await fetch(`http://127.0.0.1:8000/history}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ "recipeId": id,"timestamp":selectedDate.toISOString().split("T")[0],"recipeName": title ,"costOfRecipe": cost.toFixed(2), "ingredientList":ingredients , "recipeImage": imageURL})
+          body: JSON.stringify({ "recipeId": id,"timestamp":selectedDate.toISOString().split("T")[0],"recipeName": title ,"costOfRecipe": cost.toFixed(2), "ingredientList":ingredients , "recipeImage": imageUrl})
 
         })
         const data = await response.json()
@@ -28,13 +28,13 @@ const Recipe = ({id, cost, title, ingredients, imageURL}: Recipetype) => {
         console.log("Error:", error)
       }
     }
-    console.log(imageURL)
+    // console.log(imageURL)
 
     return (
         <div className="border p-4 rounded-lg shadow-lg">
           <h3 className="text-lg font-bold">{title}</h3>
           <p>Cost: ${cost.toFixed(2)}</p>
-          <p><img src={imageURL} alt="Meal image" width={"150px"} height={"150px"}></img></p>
+          <p><img src={imageUrl} alt="Meal image" width={"150px"} height={"150px"}></img></p>
           <button
         className={`mt-2 px-4 py-2 rounded-lg border w-full text-white`}
         onClick={() => setInterested(!interested)}
@@ -68,7 +68,7 @@ const RecipeList = ({recipes}: RecipeListType) => {
             title={recipe.title}
             cost={recipe.cost}
             ingredients={recipe.ingredients} 
-            imageURL={recipe.imageURL}/>
+            imageUrl={recipe.imageUrl}/>
           ))}
         </div>
       );

@@ -6,10 +6,12 @@ import Home from "./pages/home"
 import History from "./pages/history"
 import Profile from "./pages/profile"
 import { Recipetype } from "./types";
-import {RecipeList} from "./recipe";
+import { RecipeList } from "./recipe";
+import NavBar from "./navbar";
 
 
 export default function App() {
+
   const [searchResults, setSearchResults] = useState<Recipetype[]>([])
 
   useEffect(() => {

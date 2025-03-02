@@ -1,8 +1,12 @@
-from fastapi import HTTPException, Query, APIRouter
+from fastapi import HTTPException, APIRouter
 import sqlite3
 from pydantic import BaseModel, typing
 
 router = APIRouter()
+
+# configuration = sp.Configuration(
+#     host = "https://api.spoonacular.com"
+# )
 
 class Recipe(BaseModel):
     recipeId: int
@@ -17,9 +21,10 @@ cursor = conn.cursor()
 
 DB_PATH = "database.db"  # Path to your SQLite file (can be any database)
 
+# POST /history - Log a new recipe view for a user
 @router.post("/history")
 async def create_history_item(recipe: Recipe):
-
+    
     try:
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
@@ -33,6 +38,7 @@ async def create_history_item(recipe: Recipe):
         raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
 
+# GET /history/{user_id} - Fetch the latest 15 recipes viewed by the user
 @router.get("/history")
 async def get_user_history():
     try:
@@ -50,3 +56,8 @@ async def get_user_history():
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {e}")
+
+
+
+
+
