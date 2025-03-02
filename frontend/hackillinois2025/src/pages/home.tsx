@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import NavBar from "../navbar";
 import { Recipetype } from "../types";
 import {RecipeList} from "../recipe";
+// import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+// import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Icon from '@mui/material/Icon';
+
 
 export default function Home() {
   const [searchResults, setSearchResults] = useState<Recipetype[]>([])
@@ -23,14 +28,15 @@ export default function Home() {
     }
   }
 
-
-
   return (
     <>
       <div>
-        <div style={{padding: 70}}></div>
+        <div style={{padding: 90}}></div>
+        <h1 className="flex flex-col items-center font-bold text-3xl pb-12">Recipe Finder</h1>
         <div className="flex flex-col items-center">
-          <div className="pb-8"><NavBar onSearch={search}></NavBar></div>
+          <div className="pb-8">
+            <NavBar onSearch={search}></NavBar>
+          </div>
           <div>
               {searchResults.length === 0 ? (
                 <p>No recipes found.</p>

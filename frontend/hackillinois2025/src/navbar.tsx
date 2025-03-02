@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 
 interface HeaderProps {
     onSearch: (cuisine: string, budget: number) => void;
@@ -14,7 +14,8 @@ interface HeaderProps {
     };
 
     return (
-        <div>
+        <div className="flex flex-row">
+            <label className="pr-5 pt-2">Select a cusine type:</label>
             <select className="p-2 bg-white text-black rounded-lg" value={cuisine} onChange={(e) => setCuisine(e.target.value)}>
                 <option value="african">African</option>
                 <option value="asian">Asian</option>
@@ -44,9 +45,11 @@ interface HeaderProps {
                 <option value="thai">Thai</option>
                 <option value="vietnamese">Vietnamese</option>
             </select>
-
-            <input type="number" className="p-2 rounded-lg text-black" placeholder="Budget" value={budget} onChange={(e) => setBudget(Number(e.target.value))}/>
-            <button className="bg-green-500 px-4 py-2 rounded-lg text-white" onClick={handleSearch}> Search </button>
+            <div className="flex flex-row">
+                <label className="flex row pr-5 pl-10 pt-2">Enter your budget:</label>
+                <input type="number" className="p-2 rounded-lg text-black" placeholder="Budget" value={budget} onChange={(e) => setBudget(Number(e.target.value))}/>
+            </div>
+            <button className="bg-blue-900 px-4 py-2 rounded-lg text-white" onClick={handleSearch}> Search </button>
         </div>
     )
 }
